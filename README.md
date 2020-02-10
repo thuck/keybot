@@ -1,4 +1,4 @@
-** Sample configuration **
+**Sample configuration**
 
 ```[cards]
 [cards.somecard]
