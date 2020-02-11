@@ -3,8 +3,8 @@ import time
 import subprocess
 import PyKCS11
 import pexpect
-from ui import get_pin
-from ui import show_error
+from .ui import get_pin
+from .ui import show_error
 
 
 class SmartCard(threading.Thread):

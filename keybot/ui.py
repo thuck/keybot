@@ -18,3 +18,7 @@ def get_pin(title):
 def show_error(result):
     Notify.init("skm")
     Notify.Notification.new("Error", result).show()
+
+if __name__ == "__main__":
+   test = get_pin('test')
+   show_error(test)

@@ -8,3 +8,6 @@ token_serial_number = "ffffffffffffffff"
 pin = 123456
 remember_pin = true
 ```
+
+**OS dependency**
+gir1.2-notify
