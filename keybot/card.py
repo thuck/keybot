@@ -3,8 +3,7 @@ import time
 import subprocess
 import PyKCS11
 import pexpect
-from .ui import get_pin
-from .ui import show_error
+from keybot import ui
 
 
 class SmartCard(threading.Thread):
@@ -47,7 +46,7 @@ class SmartCard(threading.Thread):
             correct = True
 
         except PyKCS11.PyKCS11Error as e:
-            show_error("Wrong pin")
+            ui.show_error("Wrong pin")
 
         return correct
 
@@ -56,7 +55,7 @@ class SmartCard(threading.Thread):
         self._remove_key(show=False)
         while True:
             if self._pin is None:
-                self._pin = get_pin(title)
+                self._pin = ui.get_pin(title)
 
             if self._pin is not None:
                 if self._check_pin() is True:
@@ -65,7 +64,7 @@ class SmartCard(threading.Thread):
                     ssh_add.sendline(self._pin)
                     result = ssh_add.read().strip().decode('utf-8')
                     if 'Card added:' not in result:
-                        show_error(result)
+                        ui.show_error(result)
 
                     else:
                         if self._remember_pin is False:
@@ -82,7 +81,7 @@ class SmartCard(threading.Thread):
                             capture_output=True).stderr.strip().decode('utf-8')
 
         if 'Card removed:' not in result and show is True:
-            show_error(result)
+            ui.show_error(result)
 
     def run(self):
         state = None

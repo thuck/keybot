@@ -13,10 +13,17 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://gitlab.com/thuck/keybot",
     packages=setuptools.find_packages(),
+    #packages=['keybot'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
         "Operating System :: POSIX :: Linux",
     ],
     python_requires='>=3.7',
+    entry_points={
+        'console_scripts': [
+            'kb=keybot.keybot:main'
+        ],
+    },
+    include_package_data=True,
 )

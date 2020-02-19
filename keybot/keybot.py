@@ -1,13 +1,15 @@
+#!/usr/bin/python3
+
 import sys
 import toml
 import os
-from .card import SmartCard
+from keybot import card
+
 
 CONFIG_FILE = '~/.config/keybot/config'
 
-
-if __name__ == "__main__":
-    cards = []
+def main():
+    instances = []
     try:
         with open(os.path.expanduser(CONFIG_FILE)) as keybot_config:
              config = toml.loads(keybot_config.read())
@@ -19,11 +21,15 @@ if __name__ == "__main__":
     if 'cards' in config:
         for name, parameters in config['cards'].items():
             try:
-                cards = SmartCard(name, parameters)
+                instance = card.SmartCard(name, parameters)
+                instance.start()
+                instances.append(instance)
             except Exception as e:
                 print(e)
                 sys.exit(1)
-            card.start()
 
-    for card in cards:
-        card.join()
+    for instance in instances:
+        instance.join()
+
+if __name__ == "__main__":
+    main()
