@@ -9,5 +9,5 @@ pin = 123456
 remember_pin = true
 ```
 
-**OS dependency**
+**OS dependency**  
 gir1.2-notify
