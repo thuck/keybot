@@ -6,6 +6,7 @@ import os
 import click
 import signal
 from keybot import card
+from keybot import keys
 
 
 @click.command()
@@ -18,13 +19,18 @@ def main(config):
              config = toml.loads(keybot_config.read())
 
     except FileNotFoundError as e:
-        print(f"Missing configuration file: {config}")
+        print(f'Missing configuration file: {config}')
         sys.exit(1)
 
+    if 'keys' in config:
+        for name, conf in config['keys'].items():
+            key = keys.Key(name, conf)
+            key.add()
+
     if 'cards' in config:
-        for name, parameters in config['cards'].items():
+        for name, conf in config['cards'].items():
             try:
-                instance = card.SmartCard(name, parameters)
+                instance = card.SmartCard(name, conf)
                 instance.start()
                 instances.append(instance)
             except Exception as e:
@@ -37,5 +43,5 @@ def main(config):
     signal.pause()
     sys.exit(0)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
