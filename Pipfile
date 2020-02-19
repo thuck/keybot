@@ -9,6 +9,7 @@ PyKCS11 = "*"
 pexpect = "*"
 pygobject = "*"
 click = "*"
+daemon = "*"
 
 [dev-packages]
 

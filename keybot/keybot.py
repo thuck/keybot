@@ -1,46 +1,20 @@
-#!/usr/bin/python3
-
 import sys
-import toml
-import os
 import click
-import signal
-from keybot import card
-from keybot import keys
+import daemon
+from keybot import manager
 
 
 @click.command()
-@click.option('--config', default='~/.config/keybot/config', help='Configuration file')
-def main(config):
-    instances = []
+@click.option('-c', '--config', default='~/.config/keybot/config', help='Configuration file')
+@click.option('-d', '--daemon', 'dm', default=False, is_flag=True, help='Run as daemon')
+def main(config, dm):
+    if dm is True:
+        with daemon.DaemonContext():
+            manager.manager(config)
 
-    try:
-        with open(os.path.expanduser(config)) as keybot_config:
-             config = toml.loads(keybot_config.read())
+    else:
+        manager.manager(config)
 
-    except FileNotFoundError as e:
-        print(f'Missing configuration file: {config}')
-        sys.exit(1)
-
-    if 'keys' in config:
-        for name, conf in config['keys'].items():
-            key = keys.Key(name, conf)
-            key.add()
-
-    if 'cards' in config:
-        for name, conf in config['cards'].items():
-            try:
-                instance = card.SmartCard(name, conf)
-                instance.start()
-                instances.append(instance)
-            except Exception as e:
-                print(e)
-                sys.exit(1)
-
-        for instance in instances:
-            instance.join()
-
-    signal.pause()
     sys.exit(0)
 
 if __name__ == '__main__':
