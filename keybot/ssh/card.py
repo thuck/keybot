@@ -1,5 +1,6 @@
 import threading
 import time
+import os
 import subprocess
 import PyKCS11
 import pexpect
