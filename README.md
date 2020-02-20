@@ -1,6 +1,9 @@
 **Sample configuration**
 
 ```
+[general]
+ssh_auth_sock = '~/.ssh/agent1.sock'
+
 [cards]
 [cards.somecard]
 path = "/usr/lib/ssl/engines/libpkcs11.so"
@@ -13,6 +16,7 @@ remember_pin = true
 path = '~/.ssh/id_rsa'
 pin = 'some passphrase'
 remember_pin = true
+ssh_auth_sock = '~/.ssh/agent2.sock'
 ```
 
 **OS dependency**  
