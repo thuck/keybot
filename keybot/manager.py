@@ -4,9 +4,9 @@ import sys
 import toml
 import os
 import signal
-from keybot import card
-from keybot import keys
 from keybot.ui import gui
+from keybot.ssh import card
+from keybot.ssh import key
 
 
 def manager(config):
@@ -28,8 +28,8 @@ def manager(config):
     if 'keys' in config:
         for name, conf in config['keys'].items():
             conf['ssh_auth_sock'] = conf.get('ssh_auth_sock', ssh_auth_sock)
-            key = keys.Key(name, conf, ui)
-            key.add()
+            instance = key.Key(name, conf, ui)
+            instance.add()
 
     if 'cards' in config:
         for name, conf in config['cards'].items():
