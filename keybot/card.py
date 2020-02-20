@@ -3,13 +3,14 @@ import time
 import subprocess
 import PyKCS11
 import pexpect
-from keybot import ui
 
 
 class SmartCard(threading.Thread):
-    def __init__(self, name, conf):
+    def __init__(self, name, conf, ui):
         super().__init__()
         self._name = name
+        self._ui = ui
+        self._ssh_auth_sock = conf.get('ssh_auth_sock')
         self._lib = conf.get('path')
         self._token_serial_number = conf.get('token_serial_number')
         self._pin = str(conf.get('pin')) if conf.get('pin') else None
@@ -46,7 +47,7 @@ class SmartCard(threading.Thread):
             correct = True
 
         except PyKCS11.PyKCS11Error as e:
-            ui.show_error("Wrong pin")
+            self._ui.show_error("Wrong pin")
 
         return correct
 
@@ -55,16 +56,17 @@ class SmartCard(threading.Thread):
         self._remove_key(show=False)
         while True:
             if self._pin is None:
-                self._pin = ui.get_pin(title)
+                self._pin = self._ui.get_pin(title)
 
             if self._pin is not None:
                 if self._check_pin() is True:
+                    os.environ['SSH_AUTH_SOCK'] = self._ssh_auth_sock # I think this will fail somedays due of changing the environ between threads
                     ssh_add = pexpect.spawn(f'/usr/bin/ssh-add -s {self._lib}')
                     ssh_add.expect('Enter passphrase for PKCS#11:.*')
                     ssh_add.sendline(self._pin)
                     result = ssh_add.read().strip().decode('utf-8')
                     if 'Card added:' not in result:
-                        ui.show_error(result)
+                        self._ui.show_error(result)
 
                     else:
                         if self._remember_pin is False:
@@ -77,11 +79,12 @@ class SmartCard(threading.Thread):
                 break
 
     def _remove_key(self, show=True):
+        os.environ['SSH_AUTH_SOCK'] = self._ssh_auth_sock # I think this will fail somedays due of changing the environ between threads
         result = subprocess.run(['/usr/bin/ssh-add', '-e', f'{self._lib}'],
                             capture_output=True).stderr.strip().decode('utf-8')
 
         if 'Card removed:' not in result and show is True:
-            ui.show_error(result)
+            self._ui.show_error(result)
 
     def run(self):
         state = None
