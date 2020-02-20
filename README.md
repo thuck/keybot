@@ -1,4 +1,4 @@
-#Sample configuration
+# Sample configuration
 
 ```
 [general]
@@ -19,7 +19,7 @@ remember_pin = true
 ssh_auth_sock = '~/.ssh/agent2.sock'
 ```
 
-#SSH config example
+# SSH config example
 ```
 Host *.smartcard
     User thuck
