@@ -17,6 +17,11 @@ path = '~/.ssh/id_rsa'
 pin = 'some passphrase'
 remember_pin = true
 ssh_auth_sock = '~/.ssh/agent2.sock'
+
+[totp]
+[totp.google]
+secret = '33THUCKSECRET333'
+path = '~/.totp_file_output'
 ```
 
 # SSH config example

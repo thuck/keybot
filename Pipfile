@@ -10,6 +10,7 @@ pexpect = "*"
 pygobject = "*"
 click = "*"
 daemon = "*"
+pyotp = "*"
 
 [dev-packages]
 

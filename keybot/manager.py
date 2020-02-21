@@ -7,6 +7,7 @@ import signal
 from keybot.ui import gui
 from keybot.ssh import card
 from keybot.ssh import key
+from keybot.otp import totp
 
 
 def manager(config):
@@ -24,6 +25,10 @@ def manager(config):
 
     if 'general' in config:
         ssh_auth_sock = config['general'].get('ssh_auth_sock', ssh_auth_sock)
+
+    if 'totp' in config:
+        for name, conf in config['totp'].items():
+            totp.TOTP(name, conf).run()
 
     if 'keys' in config:
         for name, conf in config['keys'].items():
