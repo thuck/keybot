@@ -61,5 +61,5 @@ Copy sample to *.config/systemd/user/ssh-agent.service*
 systemctl --user enable ssh-agent
 systemctl --user start ssh-agent
 
-**OS dependency**  
+# OS dependency 
 gir1.2-notify
