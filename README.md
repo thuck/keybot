@@ -6,9 +6,9 @@ ssh_auth_sock = '~/.ssh/agent1.sock'
 
 [cards]
 [cards.somecard]
-path = "/usr/lib/ssl/engines/libpkcs11.so"
-token_serial_number = "ffffffffffffffff"
-pin = 123456
+path = '/usr/lib/ssl/engines/libpkcs11.so'
+token_serial_number = 'ffffffffffffffff'
+pin = '123456'
 remember_pin = true
 
 [keys]
@@ -23,6 +23,26 @@ ssh_auth_sock = '~/.ssh/agent2.sock'
 secret = '33THUCKSECRET333'
 path = '~/.totp_file_output'
 ```
+
+# systemd service sample
+```
+[Unit]
+Description=Keybot daemon
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/kb -c %h/.config/keybot/config
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
+```
+
+Copy sample to *.config/systemd/user/keybot.service*
+
+systemctl --user enable keybot  
+systemctl --user start keybot  
 
 # SSH config example
 ```
