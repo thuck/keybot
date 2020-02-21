@@ -2,7 +2,7 @@
 
 ```
 [general]
-ssh_auth_sock = '~/.ssh/agent1.sock'
+ssh_auth_sock = '~/.ssh/ssh-agent.socket'
 
 [cards]
 [cards.somecard]
