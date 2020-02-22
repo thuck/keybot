@@ -20,5 +20,5 @@ class TOTP:
 
     def run(self):
         self._generate_token()
-        threading.Timer(1.0, self.run).start()
+        threading.Timer(0.5, self.run).start()
         
