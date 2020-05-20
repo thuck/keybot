@@ -5,8 +5,10 @@ from keybot import manager
 
 
 @click.command()
-@click.option('-c', '--config', default='~/.config/keybot/config', help='Configuration file')
-@click.option('-d', '--daemon', 'dm', default=False, is_flag=True, help='Run as daemon')
+@click.option(
+    "-c", "--config", default="~/.config/keybot/config", help="Configuration file"
+)
+@click.option("-d", "--daemon", "dm", default=False, is_flag=True, help="Run as daemon")
 def main(config, dm):
     if dm is True:
         with daemon.DaemonContext():
@@ -17,5 +19,6 @@ def main(config, dm):
 
     sys.exit(0)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
