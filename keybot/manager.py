@@ -26,9 +26,11 @@ def manager(config):
     if "general" in config:
         ssh_auth_sock = config["general"].get("ssh_auth_sock", ssh_auth_sock)
 
-    if "totp" in config:
-        for name, conf in config["totp"].items():
-            totp.TOTP(name, conf).run()
+    if 'totp' in config:
+        for name, conf in config['totp'].items():
+            instance = totp.TOTP(name, conf)
+            instance.start()
+            instances.append(instance)
 
     if "keys" in config:
         for name, conf in config["keys"].items():
